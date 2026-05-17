@@ -1,81 +1,86 @@
- Indian Flag & JS Logo
- 
-This is a C++ computer graphics project built using OpenGL and GLUT (OpenGL Utility Toolkit). The application renders the Indian National Flag alongside a stylized JavaScript (JS) logo. It also features interactive 2D transformations, allowing the user to translate, rotate, and scale the rendered graphics in real-time using keyboard inputs.
+OpenGL Graphics — Indian Flag & JS Logo
+
+Descriptin
+
+This is a small C++ OpenGL project (using GLUT) that renders the Indian National Flag alongside a stylized JavaScript (JS) logo. The program supports interactive 2D transformations so you can translate, rotate, and scale the scene in real time with the keyboard.
 
 Features
-2D Rendering: Accurately draws the Indian Flag (including the 24-spoke Ashoka Chakra) and the JS logo using basic OpenGL primitives (Quads, Triangles, Lines, Polygons).
 
-Interactive Transformations: Real-time manipulation of the graphics:
-
-Translation (Moving up, down, left, right)
-Rotation (Clockwise and Counter-Clockwise)
-Scaling (Zooming in and out)
-
-Responsive Window: The viewport automatically recenters and adjusts when the window is resized.
+- 2D Rendering: Draws the Indian Flag (including the 24-spoke Ashoka Chakra) and a JS logo using basic OpenGL primitives (quads, triangles, lines, polygons).
+- Interactive Transformations: Translate, rotate, and scale the scene in real time.
+- Responsive Window: The viewport recenters and adjusts when the window is resized.
 
 Controls
-You can control the graphics using the following keyboard inputs:
 
- Key/Letters            Action
-W / Up Arrow           Move Up
-S / Down Arrow         Move Down
-A / Left Arrow         Move Left
-D / Right Arrow        Move Right
-Q                      Rotate Counter-Clockwise
-E                      Rotate Clockwise
-R                      Zoom In (Scale Up)
-F                      Zoom Out (Scale Down)
-0                      Reset all transformations to default
-ESC                    Exit the application
+Use the keyboard keys below to control the scene:
 
+- `W` or Up Arrow — Move up
+- `S` or Down Arrow — Move down
+- `A` or Left Arrow — Move left
+- `D` or Right Arrow — Move right
+- `Q` — Rotate counter-clockwise
+- `E` — Rotate clockwise
+- `R` — Zoom in (scale up)
+- `F` — Zoom out (scale down)
+- `0` — Reset all transformations to defaults
+- `ESC` — Exit the application
 
-Prerequisites:
+Prerequisites
 
-To compile and run this project, you need a C++ compiler and the OpenGL/GLUT libraries installed on your system.
-1. Linux (Ubuntu/Debian)
-Install the required tools and FreeGLUT development packages using the terminal:
+You need a C++ compiler and OpenGL/GLUT (FreeGLUT) development libraries.
 
+Linux (Ubuntu/Debian)
+
+Run:
+
+```sh
 sudo apt-get update
 sudo apt-get install build-essential freeglut3-dev libgl1-mesa-dev libglu1-mesa-dev
+```
 
-2. Windows
-Using MinGW (GCC): You need to download and install FreeGLUT for MinGW. Place the include, lib, and bin (freeglut.dll) files in your MinGW installation folders.
+Windows
 
-Using Visual Studio: You can set up a C++ Empty Project and install FreeGLUT via the NuGet Package Manager (Project > Manage NuGet Packages... -> search for freeglut).
+- MinGW/GCC: download FreeGLUT for MinGW and place the `include`, `lib`, and `bin` (freeglut.dll) files into your MinGW folders.
+- Visual Studio: create a C++ project and add FreeGLUT via NuGet (Project → Manage NuGet Packages… → search for `freeglut`).
 
-3. macOS
-macOS comes with OpenGL and GLUT frameworks pre-installed, though they are deprecated in newer versions. You will need Xcode command-line tools:
+macOS
+
+Install Xcode command-line tools (if not already installed):
+
+```sh
 xcode-select --install
+```
 
 Compilation & Execution
-Save the provided C++ code into a file named main.cpp. Then, use your terminal or command prompt to compile and run the project based on your operating system.
+
+Save the code as `main.cpp` and compile using the commands below for your platform.
 
 Linux
-Compile the code:
-g++ main.cpp -lGL -lGLU -lglut -o graphics_app
 
-Run the executable:
+```sh
+g++ main.cpp -lGL -lGLU -lglut -o graphics_app
 ./graphics_app
+```
 
 Windows (MinGW)
-Compile the code:
 
+```sh
 g++ main.cpp -o graphics_app.exe -lfreeglut -lglu32 -lopengl32
-
-Run the executable:
-
 graphics_app.exe
+```
 
-macOS:
-Compile the code using Apple's frameworks:
+macOS
 
+```sh
 g++ main.cpp -framework OpenGL -framework GLUT -Wno-deprecated -o graphics_app
-
-Run the executable:
-
 ./graphics_app
+```
 
-Technical Details
-Coordinate System: The application uses a custom Orthographic 2D projection gluOrtho2D(-1000, 1000, -1000, 1000).
+Technical details
 
-Transformations Order: The matrix operations are applied in the order of Translation -> Rotation -> Scaling to ensure the objects rotate and scale around their center points.
+- Coordinate system: uses an orthographic 2D projection `gluOrtho2D(-1000, 1000, -1000, 1000)`.
+- Transform order: Translation → Rotation → Scaling (so objects rotate/scale about their center).
+
+Notes
+
+- This README only improves wording and formatting; no project structure or file locations were changed.
