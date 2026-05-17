@@ -121,7 +121,7 @@ void display() {
     }
     glEnd();
 
-    // JavaScript Logo
+    // this is my contribution for js logo
     glColor3f(0.0f, 0.0f, 0.0f);//background color
     drawRectangle(200, -1000, 1000, 1000);
 
