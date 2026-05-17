@@ -80,7 +80,3 @@ Technical details
 
 - Coordinate system: uses an orthographic 2D projection `gluOrtho2D(-1000, 1000, -1000, 1000)`.
 - Transform order: Translation → Rotation → Scaling (so objects rotate/scale about their center).
-
-Notes
-
-- This README only improves wording and formatting; no project structure or file locations were changed.
