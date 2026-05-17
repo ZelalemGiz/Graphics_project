@@ -64,19 +64,19 @@ void display() {
     glScalef(scaleX, scaleY, 1.0f);
     glTranslatef(-contentCenterX, -contentCenterY, 0.0f);
 
-    // Orange  (top)
+    // Orange  (top of the flag)
     glColor3f(255.0f/255.0f, 153.0f/255.0f, 51.0f/255.0f);
     drawRectangle(-1000, 333, 200, 1000);
 
-    // White (middle)
+    // White (middle of thr flag)
     glColor3f(1.0f, 1.0f, 1.0f);
     drawRectangle(-1000, -333, 200, 333);
 
-    // Green  (bottom)
+    // Green  (bottom part of the flag)
     glColor3f(19.0f/255.0f, 136.0f/255.0f, 8.0f/255.0f);
     drawRectangle(-1000, -1000, 200, -333);
 
-    // Ashoka Chakra
+    // Ashoka Chakra(circle that center of the flag)
     int cx = -400, cy = 0;
     int rx  = 120, ry = 300;
 
@@ -110,7 +110,7 @@ void display() {
     }
     glEnd();
 
-    // 24 spokes
+    // 24 spokes(draws center point to outer ring)
     glLineWidth(2.0f);
     glBegin(GL_LINES);
     for (int i = 0; i < 24; i++) {
@@ -200,6 +200,7 @@ void specialKeys(int key, int x, int y) {
 void reshape(int w,int h) {
     windowWidth = w;
     windowHeight = h;
+    
 //image width and hieght
     int vw = 1000;
     int vh = 400;
