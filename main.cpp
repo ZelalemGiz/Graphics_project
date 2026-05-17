@@ -3,8 +3,6 @@
 
 const float PI = 3.1415926535f;
 
-
-
 float translateX = 0.0f;
 float translateY = 0.0f;
 float rotateAngle = 0.0f;
@@ -15,10 +13,52 @@ float scaleY = 1.0f;
 int windowWidth = 1200;
 int windowHeight = 800;
 
-
 // scaled to -1000 to 1000
 const int SCALE = 1000;
 
+// Wave Animation Variables
+float waveAngle = 0.0f;
+const float WAVE_SPEED = 0.07f;       // Controls animation speed
+const float WAVE_AMPLITUDE = 35.0f;   // Controls how intense the wave bends
+
+// Calculates a dynamic light/shadow factor based on the wave's slope to simulate a 3D effect
+float get3DShading(float x) {
+    // Cosine gives us the slope/angle of our sine wave at position X
+    float slope = cos(waveAngle + (x * 0.005f));
+
+    // Create a shading multiplier (0.80 to 1.15) based on the wave contour
+    float shade = 0.95f + 0.20f * slope;
+
+    // Keep color boundaries safely within standard 0.0 to 1.0 RGB range
+    if (shade > 1.0f) shade = 1.0f;
+    if (shade < 0.0f) shade = 0.0f;
+    return shade;
+}
+
+// Draws a waving version of your flag rectangles with dynamic 3D shading
+void drawWavingRectangle3D(int x1, int y1, int x2, int y2, float baseR, float baseG, float baseB) {
+    int segments = 60; // Increased segments for smoother 3D color gradients
+    float width = x2 - x1;
+    float segWidth = width / segments;
+
+    glBegin(GL_QUAD_STRIP);
+    for (int i = 0; i <= segments; i++) {
+        float currX = x1 + i * segWidth;
+        float waveOffset = WAVE_AMPLITUDE * sin(waveAngle + (currX * 0.005f));
+
+        // Calculate the dynamic 3D shading factor for this slice
+        float shade = get3DShading(currX);
+
+        // Apply the 3D shading directly to the color vertices
+        glColor3f(baseR * shade, baseG * shade, baseB * shade);
+
+        glVertex2f(currX, y2 + waveOffset);
+        glVertex2f(currX, y1 + waveOffset);
+    }
+    glEnd();
+}
+
+// KEPT EXACTLY AS PROVIDED
 void drawRectangle(int x1, int y1, int x2, int y2) {
     glBegin(GL_QUADS);
     glVertex2i(x1, y2);
@@ -28,7 +68,8 @@ void drawRectangle(int x1, int y1, int x2, int y2) {
     glEnd();
 }
 
-void drawArc(int cx, int cy, int r_in, int r_out,float start_angle, float end_angle) {
+// KEPT EXACTLY AS PROVIDED
+void drawArc(int cx, int cy, int r_in, int r_out, float start_angle, float end_angle) {
     int segments = 50;
     glBegin(GL_QUAD_STRIP);
     for (int i = 0; i <= segments; i++) {
@@ -44,46 +85,42 @@ void drawArc(int cx, int cy, int r_in, int r_out,float start_angle, float end_an
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    //  transformations
+    // transformations
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
     // Calculate the center of the content (midpoint of flag and JS logo)
-    int contentCenterX = -400;  
-    int contentCenterY = 0;    
+    int contentCenterX = -400;
+    int contentCenterY = 0;
 
-    // Apply translation 
+    // Apply translation
     glTranslatef(translateX * SCALE, translateY * SCALE, 0.0f);
 
-    //  rotation 
+    // rotation
     glTranslatef(contentCenterX, contentCenterY, 0.0f);
     glRotatef(rotateAngle, 0.0f, 0.0f, 1.0f);
     glTranslatef(-contentCenterX, -contentCenterY, 0.0f);
 
-    //  scaling
+    // scaling
     glTranslatef(contentCenterX, contentCenterY, 0.0f);
     glScalef(scaleX, scaleY, 1.0f);
     glTranslatef(-contentCenterX, -contentCenterY, 0.0f);
 
-    // Orange  (top of the flag)
-    glColor3f(255.0f/255.0f, 153.0f/255.0f, 51.0f/255.0f);
-    drawRectangle(-1000, 333, 200, 1000);
+    // Orange (top of the flag) - NOW 3D SHADED
+    drawWavingRectangle3D(-1000, 333, 200, 1000, 255.0f/255.0f, 153.0f/255.0f, 51.0f/255.0f);
 
-    // White (middle of thr flag)
-    glColor3f(1.0f, 1.0f, 1.0f);
-    drawRectangle(-1000, -333, 200, 333);
+    // White (middle of the flag) - NOW 3D SHADED
+    drawWavingRectangle3D(-1000, -333, 200, 333, 1.0f, 1.0f, 1.0f);
 
-    // Green  (bottom part of the flag)
-    glColor3f(19.0f/255.0f, 136.0f/255.0f, 8.0f/255.0f);
-    drawRectangle(-1000, -1000, 200, -333);
+    // Green (bottom part of the flag) - NOW 3D SHADED
+    drawWavingRectangle3D(-1000, -1000, 200, -333, 19.0f/255.0f, 136.0f/255.0f, 8.0f/255.0f);
 
-    // Ashoka Chakra(circle that center of the flag)
+    // Ashoka Chakra (circle that center of the flag) - 3D LIGHTING APPLIED
     int cx = -400, cy = 0;
     int rx  = 120, ry = 300;
+    float chkR = 0.0f, chkG = 0.0f, chkB = 128.0f / 255.0f;
 
-    glColor3f(0.0f, 0.0f, 128.0f / 255.0f);
-
-    // Outer ring
+    // Outer ring with dynamic 3D color shading
     glBegin(GL_TRIANGLES);
     for (int i = 0; i < 100; i++) {
         float t1 = 2.0f * PI * i       / 100.0f;
@@ -91,37 +128,65 @@ void display() {
         float rx_out = rx,        ry_out = ry;
         float rx_in  = rx * 0.85f, ry_in = ry * 0.85f;
 
-        glVertex2i(cx + (int)(rx_in  * cos(t1)), cy + (int)(ry_in  * sin(t1)));
-        glVertex2i(cx + (int)(rx_out * cos(t1)), cy + (int)(ry_out * sin(t1)));
-        glVertex2i(cx + (int)(rx_out * cos(t2)), cy + (int)(ry_out * sin(t2)));
+        float xA = cx + rx_in * cos(t1);
+        float xB = cx + rx_out * cos(t1);
+        float xC = cx + rx_out * cos(t2);
+        float xD = cx + rx_in * cos(t2);
 
-        glVertex2i(cx + (int)(rx_in  * cos(t1)), cy + (int)(ry_in  * sin(t1)));
-        glVertex2i(cx + (int)(rx_out * cos(t2)), cy + (int)(ry_out * sin(t2)));
-        glVertex2i(cx + (int)(rx_in  * cos(t2)), cy + (int)(ry_in  * sin(t2)));
+        float shadeA = get3DShading(xA);
+        float shadeB = get3DShading(xB);
+        float shadeC = get3DShading(xC);
+        float shadeD = get3DShading(xD);
+
+        glColor3f(chkR * shadeA, chkG * shadeA, chkB * shadeA);
+        glVertex2f(xA, cy + ry_in * sin(t1) + WAVE_AMPLITUDE * sin(waveAngle + (xA * 0.005f)));
+        glColor3f(chkR * shadeB, chkG * shadeB, chkB * shadeB);
+        glVertex2f(xB, cy + ry_out * sin(t1) + WAVE_AMPLITUDE * sin(waveAngle + (xB * 0.005f)));
+        glColor3f(chkR * shadeC, chkG * shadeC, chkB * shadeC);
+        glVertex2f(xC, cy + ry_out * sin(t2) + WAVE_AMPLITUDE * sin(waveAngle + (xC * 0.005f)));
+
+        glColor3f(chkR * shadeA, chkG * shadeA, chkB * shadeA);
+        glVertex2f(xA, cy + ry_in * sin(t1) + WAVE_AMPLITUDE * sin(waveAngle + (xA * 0.005f)));
+        glColor3f(chkR * shadeC, chkG * shadeC, chkB * shadeC);
+        glVertex2f(xC, cy + ry_out * sin(t2) + WAVE_AMPLITUDE * sin(waveAngle + (xC * 0.005f)));
+        glColor3f(chkR * shadeD, chkG * shadeD, chkB * shadeD);
+        glVertex2f(xD, cy + ry_in * sin(t2) + WAVE_AMPLITUDE * sin(waveAngle + (xD * 0.005f)));
     }
     glEnd();
 
-    // Centre dot
+    // Centre dot with dynamic 3D color shading
     glBegin(GL_POLYGON);
     for (int i = 0; i < 30; i++) {
         float theta = 2.0f * PI * i / 30.0f;
         float dotRX = rx * 0.15f;
         float dotRY = ry * 0.15f;
-        glVertex2i(cx + (int)(dotRX * cos(theta)), cy + (int)(dotRY * sin(theta)));
+        float pX = cx + dotRX * cos(theta);
+        float shade = get3DShading(pX);
+        glColor3f(chkR * shade, chkG * shade, chkB * shade);
+        glVertex2f(pX, cy + dotRY * sin(theta) + WAVE_AMPLITUDE * sin(waveAngle + (pX * 0.005f)));
     }
     glEnd();
 
-    // 24 spokes(draws center point to outer ring)
+    // 24 spokes with dynamic 3D color shading
     glLineWidth(2.0f);
     glBegin(GL_LINES);
     for (int i = 0; i < 24; i++) {
         float theta = 2.0f * PI * i / 24.0f;
-        glVertex2i(cx, cy);
-        glVertex2i(cx + (int)(rx * 0.85f * cos(theta)), cy + (int)(ry * 0.85f * sin(theta)));
+        float pX2 = cx + rx * 0.85f * cos(theta);
+
+        float shadeCenter = get3DShading(cx);
+        glColor3f(chkR * shadeCenter, chkG * shadeCenter, chkB * shadeCenter);
+        glVertex2f(cx, cy + WAVE_AMPLITUDE * sin(waveAngle + (cx * 0.005f)));
+
+        float shadeOuter = get3DShading(pX2);
+        glColor3f(chkR * shadeOuter, chkG * shadeOuter, chkB * shadeOuter);
+        glVertex2f(pX2, cy + ry * 0.85f * sin(theta) + WAVE_AMPLITUDE * sin(waveAngle + (pX2 * 0.005f)));
     }
     glEnd();
 
-    // this is my contribution for js logo
+    // =================================================================
+    //  YOUR CONTRIBUTIONS FOR JS LOGO - ABSOLUTELY UNTOUCHED & AS IS
+    // =================================================================
     glColor3f(0.0f, 0.0f, 0.0f);//background color
     drawRectangle(200, -1000, 1000, 1000);
 
@@ -155,6 +220,13 @@ void display() {
     drawRectangle(s_cx - text_r_out, cy_bot, s_cx - text_r_in, cy_bot + 120);
 
     glFlush();
+}
+
+// Timer function to update wave frame positions smoothly (~60FPS)
+void timer(int value) {
+    waveAngle += WAVE_SPEED;
+    glutPostRedisplay();
+    glutTimerFunc(16, timer, 0);
 }
 
 // Keyboard controls for transformations
@@ -198,18 +270,16 @@ void specialKeys(int key, int x, int y) {
     glutPostRedisplay();
 }
 
-void reshape(int w,int h) {
+void reshape(int w, int h) {
     windowWidth = w;
     windowHeight = h;
-    
-//image width and hieght
+
     int vw = 1000;
     int vh = 400;
 
     int x = (w - vw) / 2;
     int y = (h - vh) / 2;
 
-    // Ensure  doesn't go negative
     if (x < 0) x = 0;
     if (y < 0) y = 0;
 
@@ -227,7 +297,7 @@ int main(int argc, char** argv) {
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(windowWidth, windowHeight);
     glutInitWindowPosition(10, 10);
-    glutCreateWindow("Indian Flag & JS Logo - With Transformations (Integer Coords)");
+    glutCreateWindow("3D Waving Indian Flag & Untouched JS Logo");
 
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -235,6 +305,9 @@ int main(int argc, char** argv) {
     glutReshapeFunc(reshape);
     glutKeyboardFunc(keyboard);
     glutSpecialFunc(specialKeys);
+
+    // Registers the timer to trigger physics redraw cycles automatically
+    glutTimerFunc(0, timer, 0);
 
     glutMainLoop();
     return 0;
