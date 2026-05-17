@@ -3,6 +3,7 @@
 
 const float PI = 3.1415926535f;
 
+
 // Transformation variables
 float translateX = 0.0f;
 float translateY = 0.0f;
