@@ -66,14 +66,7 @@ void drawWavingRectangle3D(int x1, int y1, int x2, int y2, float baseR, float ba
 }
 
 // KEPT EXACTLY AS PROVIDED
-void drawRectangle(int x1, int y1, int x2, int y2) {
-    glBegin(GL_QUADS);
-    glVertex2i(x1, y2);
-    glVertex2i(x2, y2);
-    glVertex2i(x2, y1);
-    glVertex2i(x1, y1);
-    glEnd();
-}
+
 
 // KEPT EXACTLY AS PROVIDED
 void drawArc(int cx, int cy, int r_in, int r_out, float start_angle, float end_angle) {
@@ -117,25 +110,12 @@ void display() {
     drawWavingRectangle3D(-1000, 333, 200, 1000, 255.0f/255.0f, 153.0f/255.0f, 51.0f/255.0f);
 
     // White (middle of the flag) - NOW 3D SHADED
-    drawWavingRectangle3D(-1000, -333, 200, 333, 1.0f, 1.0f, 1.0f);
-
-    // Green (bottom part of the flag) - NOW 3D SHADED
-    drawWavingRectangle3D(-1000, -1000, 200, -333, 19.0f/255.0f, 136.0f/255.0f, 8.0f/255.0f);
-
-    // Ashoka Chakra (circle that center of the flag) - 3D LIGHTING APPLIED
-    int cx = -400, cy = 0;
-    int rx  = 120, ry = 300;
-    float chkR = 0.0f, chkG = 0.0f, chkB = 128.0f / 255.0f;
-
-    // Outer ring with dynamic 3D color shading
-    glBegin(GL_TRIANGLES);
-    for (int i = 0; i < 100; i++) {
-        float t1 = 2.0f * PI * i       / 100.0f;
-        float t2 = 2.0f * PI * (i + 1) / 100.0f;
-        float rx_out = rx,        ry_out = ry;
-        float rx_in  = rx * 0.85f, ry_in = ry * 0.85f;
-
-        float xA = cx + rx_in * cos(t1);
+    drawWavingRectangle3D(-1000, -333, 20glBegin(GL_QUADS);
+    glVertex2i(x1, y2);
+    glVertex2i(x2, y2);
+    glVertex2i(x2, y1);
+    glVertex2i(x1, y1);
+    glEnd();        float xA = cx + rx_in * cos(t1);
         float xB = cx + rx_out * cos(t1);
         float xC = cx + rx_out * cos(t2);
         float xD = cx + rx_in * cos(t2);
