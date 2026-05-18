@@ -67,6 +67,14 @@ void drawWavingRectangle3D(int x1, int y1, int x2, int y2, float baseR, float ba
 
 // KEPT EXACTLY AS PROVIDED
 
+void drawRectangle(int x1, int y1, int x2, int y2) {
+    glBegin(GL_QUADS);
+    glVertex2i(x1, y2);
+    glVertex2i(x2, y2);
+    glVertex2i(x2, y1);
+    glVertex2i(x1, y1);
+    glEnd();
+}
 
 // KEPT EXACTLY AS PROVIDED
 void drawArc(int cx, int cy, int r_in, int r_out, float start_angle, float end_angle) {
