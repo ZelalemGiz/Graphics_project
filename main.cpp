@@ -3,19 +3,15 @@
 
 const float PI = 3.1415926535f;
 
-// Transformation variables
 float translateX = 0.0f;
 float translateY = 0.0f;
 float rotateAngle = 0.0f;
 float scaleX = 1.0f;
 float scaleY = 1.0f;
 
-// Window dimensions
 int windowWidth = 1200;
 int windowHeight = 800;
 
-// Scale factor to convert original float coords to integers
-// Original range: -1.0 to 1.0, now scaled to -1000 to 1000
 const int SCALE = 1000;
 
 void drawRectangle(int x1, int y1, int x2, int y2) {
@@ -43,46 +39,36 @@ void drawArc(int cx, int cy, int r_in, int r_out,float start_angle, float end_an
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // Apply transformations
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    // Calculate the center of the content (midpoint of flag and JS logo)
-    int contentCenterX = -400;  // Center between flag pole (-1000) and JS logo end (1000)
-    int contentCenterY = 0;     // Vertical center
+    int contentCenterX = -400;
+    int contentCenterY = 0;
 
-    // Apply translation first (convert float translation to integer pixels)
     glTranslatef(translateX * SCALE, translateY * SCALE, 0.0f);
 
-    // Apply rotation around the content center
     glTranslatef(contentCenterX, contentCenterY, 0.0f);
     glRotatef(rotateAngle, 0.0f, 0.0f, 1.0f);
     glTranslatef(-contentCenterX, -contentCenterY, 0.0f);
 
-    // Apply scaling around the content center
     glTranslatef(contentCenterX, contentCenterY, 0.0f);
     glScalef(scaleX, scaleY, 1.0f);
     glTranslatef(-contentCenterX, -contentCenterY, 0.0f);
 
-    // Orange stripe (top)
     glColor3f(255.0f/255.0f, 153.0f/255.0f, 51.0f/255.0f);
     drawRectangle(-1000, 333, 200, 1000);
 
-    // White stripe (middle)
     glColor3f(1.0f, 1.0f, 1.0f);
     drawRectangle(-1000, -333, 200, 333);
 
-    // Green stripe (bottom)
     glColor3f(19.0f/255.0f, 136.0f/255.0f, 8.0f/255.0f);
     drawRectangle(-1000, -1000, 200, -333);
 
-    // Ashoka Chakra
     int cx = -400, cy = 0;
     int rx  = 120, ry = 300;
 
     glColor3f(0.0f, 0.0f, 128.0f / 255.0f);
 
-    // Outer ring
     glBegin(GL_TRIANGLES);
     for (int i = 0; i < 100; i++) {
         float t1 = 2.0f * PI * i       / 100.0f;
@@ -100,18 +86,15 @@ void display() {
     }
     glEnd();
 
-    // Centre dot - Match elliptical proportions of the chakra
     glBegin(GL_POLYGON);
     for (int i = 0; i < 30; i++) {
         float theta = 2.0f * PI * i / 30.0f;
-        // Match the elliptical proportions of the outer ring (rx * 0.15, ry * 0.15)
         float dotRX = rx * 0.15f;
         float dotRY = ry * 0.15f;
         glVertex2i(cx + (int)(dotRX * cos(theta)), cy + (int)(dotRY * sin(theta)));
     }
     glEnd();
 
-    // 24 spokes
     glLineWidth(2.0f);
     glBegin(GL_LINES);
     for (int i = 0; i < 24; i++) {
@@ -121,7 +104,6 @@ void display() {
     }
     glEnd();
 
-    // JavaScript Logo
     glColor3f(0.0f, 0.0f, 0.0f);
     drawRectangle(200, -1000, 1000, 1000);
 
@@ -135,12 +117,10 @@ void display() {
     int cy_top = -165;
     int cy_bot = -615;
 
-    // Letter 'J'
     drawArc(j_cx, cy_bot, text_r_in, text_r_out, PI, 2.0f * PI);
     drawRectangle(j_cx + text_r_in, cy_bot, j_cx + text_r_out, cy_top + 225);
     drawRectangle(j_cx - text_r_out, cy_bot, j_cx - text_r_in, cy_bot + 150);
 
-    // Letter 'S'
     drawArc(s_cx, cy_top, text_r_in, text_r_out, 0.0f, 5.0f * PI / 4.0f);
     drawRectangle(s_cx + text_r_in, cy_top - 120, s_cx + text_r_out, cy_top);
 
@@ -157,24 +137,19 @@ void display() {
     glFlush();
 }
 
-// Keyboard controls for transformations
 void keyboard(unsigned char key, int x, int y) {
     switch (key) {
-        // Translation
         case 'w': translateY += 0.05f; break;
         case 's': translateY -= 0.05f; break;
         case 'a': translateX -= 0.05f; break;
         case 'd': translateX += 0.05f; break;
 
-        // Rotation
         case 'q': rotateAngle += 5.0f; break;
         case 'e': rotateAngle -= 5.0f; break;
 
-        // Scaling
         case 'r': scaleX += 0.1f; scaleY += 0.1f; break;
         case 'f': scaleX -= 0.1f; scaleY -= 0.1f; break;
 
-        // Reset
         case '0':
             translateX = 0.0f;
             translateY = 0.0f;
@@ -183,7 +158,7 @@ void keyboard(unsigned char key, int x, int y) {
             scaleY = 1.0f;
             break;
 
-        case 27: exit(0); break;  // ESC key
+        case 27: exit(0); break;
     }
     glutPostRedisplay();
 }
@@ -208,7 +183,6 @@ void reshape(int w,int h) {
     int x = (w - vw) / 2;
     int y = (h - vh) / 2;
 
-    // Ensure viewport doesn't go negative
     if (x < 0) x = 0;
     if (y < 0) y = 0;
 
