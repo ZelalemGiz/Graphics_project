@@ -30,6 +30,18 @@ const float WAVE_AMPLITUDE = 35.0f;   // Controls how intense the wave bends
 // Calculates a dynamic light/shadow factor based on the wave's slope to simulate a 3D effect
 
 
+float get3DShading(float a) {
+    // Cosine gives us the slope/angle of our sine wave at position X
+    float slope = cos(waveAngle + (a * 0.005f));
+
+    // Create a shading multiplier (0.80 to 1.15) based on the wave contour
+    float shade = 0.95f + 0.20f * slope;
+
+    // Keep color boundaries safely within standard 0.0 to 1.0 RGB range
+    if (shade > 1.0f) shade = 1.0f;
+    if (shade < 0.0f) shade = 0.0f;
+    return shade;
+}
 // Draws a waving version of your flag rectangles with dynamic 3D shading
 void drawWavingRectangle3D(int x1, int y1, int x2, int y2, float baseR, float baseG, float baseB) {
     int segments = 60; // Increased segments for smoother 3D color gradients
