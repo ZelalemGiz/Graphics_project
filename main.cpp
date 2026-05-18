@@ -30,7 +30,7 @@ const float WAVE_AMPLITUDE = 35.0f;   // Controls how intense the wave bends
 // Calculates a dynamic light/shadow factor based on the wave's slope to simulate a 3D effect
 
 
-float get3DShading(float a) {
+float get3DShading(float x) {
     // Cosine gives us the slope/angle of our sine wave at position X
     float slope = cos(waveAngle + (a * 0.005f));
 
