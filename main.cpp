@@ -25,10 +25,11 @@ float waveAngle = 0.0f;
 const float WAVE_SPEED = 0.07f;       // Controls animation speed
 const float WAVE_AMPLITUDE = 35.0f;   // Controls how intense the wave bends
 
+
 // Calculates a dynamic light/shadow factor based on the wave's slope to simulate a 3D effect
-float get3DShading(float x) {
+float get3DShading(float a) {
     // Cosine gives us the slope/angle of our sine wave at position X
-    float slope = cos(waveAngle + (x * 0.005f));
+    float slope = cos(waveAngle + (a * 0.005f));
 
     // Create a shading multiplier (0.80 to 1.15) based on the wave contour
     float shade = 0.95f + 0.20f * slope;
