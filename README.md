@@ -1,82 +1,140 @@
-OpenGL Graphics — Indian Flag & JS Logo
+# OpenGL Graphics — 3D Waving Indian Flag & JS Logo
 
-Descriptin
+## Description
 
-This is a small C++ OpenGL project (using GLUT) that renders the Indian National Flag alongside a stylized JavaScript (JS) logo. The program supports interactive 2D transformations so you can translate, rotate, and scale the scene in real time with the keyboard.
+This is a C++ OpenGL graphics project built using GLUT (FreeGLUT).  
+The application renders an animated 3D-style waving Indian National Flag together with a stylized JavaScript (JS) logo.
 
-Features
+The project demonstrates:
 
-- 2D Rendering: Draws the Indian Flag (including the 24-spoke Ashoka Chakra) and a JS logo using basic OpenGL primitives (quads, triangles, lines, polygons).
-- Interactive Transformations: Translate, rotate, and scale the scene in real time.
-- Responsive Window: The viewport recenters and adjusts when the window is resized.
+- OpenGL 2D graphics rendering
+- Real-time wave animation using sine functions
+- Dynamic 3D lighting/shading effects
+- Interactive transformations
+- Keyboard event handling
+- Custom geometric drawing using OpenGL primitives
 
-Controls
+---
 
-Use the keyboard keys below to control the scene:
+# Features
 
-- `W` or Up Arrow — Move up
-- `S` or Down Arrow — Move down
-- `A` or Left Arrow — Move left
-- `D` or Right Arrow — Move right
-- `Q` — Rotate counter-clockwise
-- `E` — Rotate clockwise
-- `R` — Zoom in (scale up)
-- `F` — Zoom out (scale down)
-- `0` — Reset all transformations to defaults
-- `ESC` — Exit the application
+## Animated Waving Indian Flag
+- Real-time cloth-like waving animation
+- Smooth sine-wave motion
+- Dynamic shading for a fake 3D lighting effect
 
-Prerequisites
+## Ashoka Chakra Rendering
+- Animated Ashoka Chakra at the center of the flag
+- 24 spokes rendered using OpenGL lines
+- Dynamic lighting applied to the chakra
 
-You need a C++ compiler and OpenGL/GLUT (FreeGLUT) development libraries.
+## Stylized JS Logo
+- Custom JavaScript logo created using:
+  - arcs
+  - rectangles
+  - quads
 
-Linux (Ubuntu/Debian)
+## Interactive Transformations
+The entire scene can be:
+- translated
+- rotated
+- scaled
 
-Run:
+in real time using the keyboard.
 
-```sh
-sudo apt-get update
-sudo apt-get install build-essential freeglut3-dev libgl1-mesa-dev libglu1-mesa-dev
-```
+## Responsive Window
+- Automatically adjusts viewport on resize
+- Maintains centered rendering
 
-Windows
+---
 
-- MinGW/GCC: download FreeGLUT for MinGW and place the `include`, `lib`, and `bin` (freeglut.dll) files into your MinGW folders.
-- Visual Studio: create a C++ project and add FreeGLUT via NuGet (Project → Manage NuGet Packages… → search for `freeglut`).
+# Controls
 
-macOS
+## Translation
 
-Install Xcode command-line tools (if not already installed):
+| Key | Action |
+|---|---|
+| `U` | Move Up |
+| `D` | Move Down |
+| `L` | Move Left |
+| `R` | Move Right |
 
-```sh
-xcode-select --install
-```
+You can also use:
 
-Compilation & Execution
+| Key | Action |
+|---|---|
+| `↑` | Move Up |
+| `↓` | Move Down |
+| `←` | Move Left |
+| `→` | Move Right |
 
-Save the code as `main.cpp` and compile using the commands below for your platform.
+---
 
-Linux
+## Rotation
 
-```sh
-g++ main.cpp -lGL -lGLU -lglut -o graphics_app
-./graphics_app
-```
+| Key | Action |
+|---|---|
+| `Q` | Rotate Counter-Clockwise |
+| `E` | Rotate Clockwise |
 
-Windows (MinGW)
+---
 
-```sh
-g++ main.cpp -o graphics_app.exe -lfreeglut -lglu32 -lopengl32
-graphics_app.exe
-```
+## Scaling
 
-macOS
+| Key | Action |
+|---|---|
+| `H` | Zoom In |
+| `F` | Zoom Out |
 
-```sh
-g++ main.cpp -framework OpenGL -framework GLUT -Wno-deprecated -o graphics_app
-./graphics_app
-```
+---
 
-Technical details
+## Reset & Exit
 
-- Coordinate system: uses an orthographic 2D projection `gluOrtho2D(-1000, 1000, -1000, 1000)`.
-- Transform order: Translation → Rotation → Scaling (so objects rotate/scale about their center).
+| Key | Action |
+|---|---|
+| `0` | Reset Transformations |
+| `2` | Exit Application |
+
+---
+
+# Technologies Used
+
+- C++
+- OpenGL
+- GLUT / FreeGLUT
+- Mathematical Animation (Sin/Cos Functions)
+
+---
+
+# Graphics Concepts Used
+
+- OpenGL Primitives
+  - `GL_QUADS`
+  - `GL_TRIANGLES`
+  - `GL_LINES`
+  - `GL_POLYGON`
+  - `GL_QUAD_STRIP`
+
+- 2D Transformations
+  - Translation
+  - Rotation
+  - Scaling
+
+- Procedural Geometry
+
+- Real-Time Animation
+
+- Dynamic Vertex Coloring
+
+- Orthographic Projection
+
+- Event-Driven Programming
+
+---
+
+# Mathematical Concepts
+
+The waving animation is created using sine functions:
+
+```math
+wave = amplitude × sin(angle + position)
