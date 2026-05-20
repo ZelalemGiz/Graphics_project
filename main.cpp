@@ -509,15 +509,15 @@ void specialKeys(int key, int x, int y) {
             break;
 
         case GLUT_KEY_DOWN:
-            translateY -= 0.05f;
+            translateY -= 0.8f;
             break;
 
         case GLUT_KEY_LEFT:
-            translateX -= 0.05f;
+            translateX -= 0.8f;
             break;
 
         case GLUT_KEY_RIGHT:
-            translateX += 0.05f;
+            translateX += 0.8f;
             break;
     }
 
