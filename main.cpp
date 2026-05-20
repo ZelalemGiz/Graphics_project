@@ -505,7 +505,7 @@ void specialKeys(int key, int x, int y) {
     switch (key) {
 
         case GLUT_KEY_UP:
-            translateY += 0.05f;
+            translateY += 0.5f;
             break;
 
         case GLUT_KEY_DOWN:
